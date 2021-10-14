@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
-print(os.environ["BACKEND_SERVER_IP"])
+load_dotenv()
+BACKEND_SERVER_IP = os.getenv("BACKEND_SERVER_IP")
+RPI_IP = os.getenv("RPI_IP")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +30,7 @@ SECRET_KEY = 'django-insecure-#0(5p1))t5@pxkcnw9d%x#mi$rt*u&s08u*4amjz3in#u2r^-@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.117.22', '192.168.117.10', ] # PC, 라즈베리파이 IP 입력
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', BACKEND_SERVER_IP, RPI_IP,]
 
 
 # Application definition
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'mqtt',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +84,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
@@ -110,13 +113,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

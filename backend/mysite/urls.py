@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from rest_framework_jwt.views import obtain_jwt_token, \
                         verify_jwt_token, refresh_jwt_token
 from . import settings
+import mqtt.client
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -4,7 +4,7 @@ from api.views import *
 
 router = routers.DefaultRouter()
 
-# router.register('video', VideoViewSet)          # api/video
+router.register('sensor', SensorViewSet) # api/sensor
 
 urlpatterns = [
     path('', include(router.urls)),
