@@ -2,7 +2,7 @@
   <div class="pa-3">
     <div class="my-3">
       <div v-if="Object.keys(sensors).length === 0">데이터 수신 중...</div>
-
+      <sensor-chart></sensor-chart>
       <div v-for="(sections, place) in sensors" :key="place" class="pa-1 pb-3">
         <m-title icon="fas fa-seedling"> {{ place }}</m-title>
         <hr color="lightgray">
@@ -33,7 +33,9 @@
 </template>
 
 <script>
+import SensorChart from '../components/sensors/SensorChart.vue';
 export default {
+  components: { SensorChart },
   name: 'Sensor',
   data() {
     return {
@@ -53,7 +55,7 @@ export default {
         //   }
         // }
       },
-      topic: 'iot/hong/control',
+      topic: 'iot/control',
       leds: [
         { place: 'livingroom', placeTitle: '거실', color: 'red', state: false },
         { place: 'kitchen', placeTitle: '부엌', color: 'green', state: true },

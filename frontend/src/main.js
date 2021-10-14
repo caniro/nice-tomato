@@ -9,9 +9,11 @@ import VueMqtt from 'vue-mqtt';
 Vue.config.productionTip = false
 
 const MQTT_BROKER_IP = process.env.VUE_APP_MQTT_BROKER_IP;
+const mqtt_url = 'ws://' + MQTT_BROKER_IP + ':9001/ws'
+console.log(mqtt_url)
 
 Vue.use(require('vue-moment'))
-Vue.use(VueMqtt, 'ws://' + MQTT_BROKER_IP + ':9001/ws', 
+Vue.use(VueMqtt, mqtt_url, 
     { clientID: "clientID-" + parseInt(Math.random() * 1000) });
 
 new Vue({
