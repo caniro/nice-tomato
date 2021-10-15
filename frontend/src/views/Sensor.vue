@@ -2,7 +2,7 @@
   <div class="pa-3">
     <div class="my-3">
       <div v-if="Object.keys(sensors).length === 0">데이터 수신 대기 중...</div>
-      <sensor-chart></sensor-chart>
+      <sensor-chart :data="chartdata" :options="options"></sensor-chart>
       <div v-for="(sections, place) in sensors" :key="place" class="pa-1 pb-3">
         <m-title icon="fas fa-seedling"> {{ place }}</m-title>
         <hr color="lightgray">
@@ -49,9 +49,15 @@ export default {
           }
         */
       },
-      chart_data: {
-        
-      },
+      chartdata: {},
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        title: {
+          display: true,
+          text: "온•습•조도 통계"
+        }
+      }
     };
   },
   mqtt: {
@@ -71,15 +77,70 @@ export default {
   },
   mounted() {
     this.$mqtt.subscribe('iot/sensor/#');
+    this.resetChartdata();
   },
   unmounted() {
     this.$mqtt.unsubscribe('iot/sensor/#');
   },
   methods: {
+    resetChartdata() {
+      this.chartdata = {
+        labels: [],
+        datasets: [
+          {
+            label: "온도",
+            borderColor: "#FC2525",
+            pointBackgroundColor: "white",
+            borderWidth: 1,
+            pointBorderColor: "red",
+            backgroundColor: "transparent",
+            data: []
+          },
+          {
+            label: "습도",
+            borderColor: "#05CBE1",
+            pointBackgroundColor: "white",
+            pointBorderColor: "skyblue",
+            borderWidth: 1,
+            backgroundColor: "transparent",
+            data: []
+          },
+          {
+            label: "조도",
+            borderColor: "yellow",
+            pointBackgroundColor: "white",
+            pointBorderColor: "yellow",
+            borderWidth: 1,
+            backgroundColor: "transparent",
+            data: []
+          ,}
+        ]
+      };
+    },
     onClickSection(place, section) {
-      axios.get(`/api/sensor?place=${place}&section=${section}`).then(res => {
-          console.log(res);
-      });
+      this.resetChartdata();
+      axios.get(`/api/sensor?place=${place}&section=${section}`)
+          .then(res => {
+              const TEMP = 0;
+              const HUMI = 1;
+              const ILLU = 2;
+              for (let data of res.data) {
+                if (data.sensor === 'temp') {
+                  // 차트 x축(시간축) 추가
+                  const regdate_h = data.regdate_h.substring(11, 13);
+                  this.chartdata.labels.push(regdate_h);
+
+                  this.chartdata.datasets[TEMP].data.push(data.avg);
+                }
+                else if (data['sensor'] === 'humi') {
+                  this.chartdata.datasets[HUMI].data.push(data.avg);
+                }
+                else if (data['sensor'] === 'illu') {
+                  this.chartdata.datasets[ILLU].data.push(data.avg);
+                }
+              }
+              console.log(this.chartdata);
+          });
     }
   },
 }
