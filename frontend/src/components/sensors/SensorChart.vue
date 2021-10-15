@@ -1,24 +1,14 @@
 <script>
 import { Line } from "vue-chartjs";
-import axios from 'axios';
-
-axios.get('/api/sensor').then(res => {
-    console.log(res.data.results);
-})
 
 export default {
   extends: Line,
   mounted() {
+
     this.renderChart(
       {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July"
+          "",
         ],
         datasets: [
           {
@@ -28,7 +18,8 @@ export default {
             borderWidth: 1,
             pointBorderColor: "red",
             backgroundColor: "transparent",
-            data: [40, 39, 10, 40, 39, 80, 40]
+            data: [40, 39, 10, 40, 39, 80, 40, 30, 50, 90, 
+                  40, 39, 10, 40, 39, 80, 40, 30, 50, 90, ]
           },
           {
             label: "습도",
