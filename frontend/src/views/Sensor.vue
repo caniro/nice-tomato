@@ -39,6 +39,8 @@
 <script>
 import axios from 'axios';
 
+const mqtt_topic = 'iot/sensor/#'
+
 export default {
   name: 'Sensor',
   data() {
@@ -89,12 +91,14 @@ export default {
     }
   },
   mounted() {
-    this.$mqtt.subscribe('iot/sensor/#');
+    this.$mqtt.subscribe(mqtt_topic);
+    console.log('mqtt subscribe :', mqtt_topic);
     // TODO : 마지막 측정값 불러와서 sensors에 저장
     this.resetChartdata();
   },
-  unmounted() {
-    this.$mqtt.unsubscribe('iot/sensor/#');
+  destroyed() {
+    this.$mqtt.unsubscribe(mqtt_topic);
+    console.log('mqtt unsubscribe :', mqtt_topic);
   },
   methods: {
     resetChartdata() {
@@ -158,7 +162,8 @@ export default {
     },
     onClickDetail(place, section) {
       console.log(place, section);
-      this.$router.push(`detail/?place=${place}&section=${section}`);
+      this.$mqtt.unsubscribe('iot/sensor/#');
+      this.$router.push(`detail?place=${place}&section=${section}`);
     }
   },
 }

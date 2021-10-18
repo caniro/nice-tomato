@@ -30,7 +30,7 @@
       </div>
       <div>
         <m-title icon="fas fa-cog"> 수동 제어</m-title>
-        <hr color="lightgray">
+        <hr color="lightgray" class="my-2">
         <v-row>
           <v-col cols="9">
             <v-text-field
@@ -106,11 +106,12 @@ export default {
     const mqtt_topic = 'iot/sensor/' + this.target_place + '/' + this.target_section + '/#';
     this.$mqtt.subscribe(mqtt_topic);
     // TODO : 마지막 측정값 불러와서 sensors에 저장
-    console.log(mqtt_topic);
+    console.log('mqtt subscribe :', mqtt_topic);
   },
-  unmounted() {
+  destroyed() {
     const mqtt_topic = 'iot/sensor/' + this.target_place + '/' + this.target_section + '/#';
     this.$mqtt.unsubscribe(mqtt_topic);
+    console.log('mqtt unsubscribe :', mqtt_topic);
   },
   methods: {
     onClickSet() {

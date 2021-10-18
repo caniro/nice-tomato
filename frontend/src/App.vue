@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>멋쟁이 토마토</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="$router.push({ name: 'Home' })">
+      <v-btn icon @click="$router.push({ name: 'Home' }).catch(() => {})">
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-btn icon v-if="isLogin" @click="logout">
@@ -12,9 +12,6 @@
       </v-btn>
       <v-btn icon v-else :to="{ name: 'Login' }">
         <v-icon>mdi-login</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -36,7 +33,7 @@
 
       <v-divider></v-divider>
 
-      <v-list dense nav>
+      <v-list dense nav v-if="isLogin">
         <v-list-item v-for="page in pages" :key="page.name"
              :to="{ name: page.name }" exact>
 
