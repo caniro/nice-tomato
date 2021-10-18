@@ -18,7 +18,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer absolute v-model="drawer" temporary app>
+    <v-navigation-drawer v-model="drawer" temporary app>
       <v-list-item two-line>
         <v-list-item-avatar v-if="isLogin">
           <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>

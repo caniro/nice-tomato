@@ -1,22 +1,35 @@
 <template>
   <div class="pa-3">
     <div class="my-3">
-      <div v-if="Object.keys(sensors).length === 0">데이터 수신 대기 중...</div>
       <sensor-chart :data="chartdata" :options="options"></sensor-chart>
+      <div v-if="Object.keys(sensors).length === 0">
+        <v-text-field
+          color="success"
+          loading
+          disabled
+        ></v-text-field>
+      </div>
       <div v-for="(sections, place) in sensors" :key="place" class="pa-1 pb-3">
         <m-title icon="fas fa-seedling"> {{ place }}</m-title>
         <hr color="lightgray">
         <div v-for="(devices, section) in sections" :key="section"
-            class="border pa-1 pb-3 text-center" @click="onClickSection(place, section)">
-          <h3 class="indigo--text mb-3">{{ section }}</h3>
-          <v-row>
-            <v-col class="px-3 py-1" cols="12" sm="4"
-                  v-for="(value, device) in devices" :key="device">
-              <temperature v-if="device==='temp'" :value="value"></temperature>
-              <humidity v-if="device==='humi'" :value="value"></humidity>
-              <illumination v-if="device==='illu'" :value="value"></illumination>
-            </v-col>
-          </v-row>
+            class="border pa-1 pb-3 text-center">
+          <div @click="onClickSection(place, section)">
+            <h3 class="indigo--text mb-3">{{ section }}</h3>
+            <v-row justify="space-between">
+              <div class="px-3 py-1" cols="9" sm="3">
+                <v-col v-for="(value, device) in devices" :key="device">
+                  <temperature v-if="device==='temp'" :value="value"></temperature>
+                  <humidity v-if="device==='humi'" :value="value"></humidity>
+                  <illumination v-if="device==='illu'" :value="value"></illumination>
+                </v-col>
+              </div>
+              <v-btn elevation="2" color="primary" class="mr-3 align-self-center" cols="3" sm="3"
+                @click.stop="onClickDetail(place, section)">
+                상세보기
+              </v-btn>
+            </v-row>
+          </div>
         </div>
       </div>
     </div>
@@ -77,6 +90,7 @@ export default {
   },
   mounted() {
     this.$mqtt.subscribe('iot/sensor/#');
+    // TODO : 마지막 측정값 불러와서 sensors에 저장
     this.resetChartdata();
   },
   unmounted() {
@@ -107,9 +121,9 @@ export default {
           },
           {
             label: "조도",
-            borderColor: "yellow",
+            borderColor: "#AAAA11",
             pointBackgroundColor: "white",
-            pointBorderColor: "yellow",
+            pointBorderColor: "#AAAA11",
             borderWidth: 1,
             backgroundColor: "transparent",
             data: []
@@ -141,6 +155,10 @@ export default {
               }
               console.log(this.chartdata);
           });
+    },
+    onClickDetail(place, section) {
+      console.log(place, section);
+      this.$router.push(`detail/?place=${place}&section=${section}`);
     }
   },
 }
