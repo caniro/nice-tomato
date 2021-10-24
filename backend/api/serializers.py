@@ -10,3 +10,8 @@ class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor
         fields = ('place', 'section', 'sensor', 'regdate_h', 'count', 'avg')
+
+class SensorLastSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sensor
+        exclude = []

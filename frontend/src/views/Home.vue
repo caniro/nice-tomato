@@ -1,22 +1,14 @@
 <template>
   <div class="pa-3">
-    <!-- <div>
-      <span>현재시간
-        <v-icon>mdi-clock</v-icon>
-        {{ new Date()|moment("YYYY-MM-DD hh:mm:ss") }}
-      </span>
-    </div>
-  
-    <div>
-      <weather />
-    </div> -->
     <v-img src="cover.png"></v-img>
     <div v-if="!isLogin" class="mt-5">
       <v-btn block color="primary" :to="{ name: 'Login' }">로그인</v-btn>
     </div>
     <div v-if="isLogin" class="mt-5">
-      <v-btn block :to="{ name: 'Cctv' }">CCTV 현황</v-btn>
-      <v-btn block :to="{ name: 'Sensor' }" class="mt-5">센서 통계</v-btn>
+      <v-btn v-for="page in pages" :key="page.name" :to="{ name: page.name }"
+          block class="mb-5" color="success" outlined>
+        <v-icon>{{ page.icon }}</v-icon> {{ page.title }}
+      </v-btn>
     </div>
   </div>
 </template>
@@ -29,5 +21,11 @@ export default {
   computed: {
     ...mapGetters(['isLogin']),
   },
+  data: () => ({
+    pages: [
+      { title: 'CCTV', name: 'Cctv', icon: 'mdi-video' },
+      { title: '센서 통계', name: 'Sensor', icon: 'mdi-access-point-network' },
+    ]
+  }),
 }
 </script>

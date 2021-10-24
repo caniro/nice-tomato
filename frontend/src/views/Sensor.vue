@@ -1,14 +1,9 @@
 <template>
   <div class="pa-3">
     <div class="my-3">
-      <sensor-chart :chart-data="chartdata" :options="options"></sensor-chart>
-      <div v-if="Object.keys(sensors).length === 0">
-        <v-text-field
-          color="success"
-          loading
-          disabled
-        ></v-text-field>
-      </div>
+      <div v-if="!isSelected" class="text-center"><span class="indigo--text font-weight-bold">구역</span>을 선택하세요.</div>
+      <sensor-chart :chart-data="chartdata" :options="options" v-if="isSelected"></sensor-chart>
+      <data-loading :obj="sensors"></data-loading>
       <div v-for="(sections, place) in sensors" :key="place" class="pa-1 pb-3">
         <m-title icon="fas fa-seedling"> {{ place }}</m-title>
         <hr color="lightgray">
@@ -75,6 +70,16 @@ export default {
       }
     };
   },
+  computed: {
+    isSelected: function() {
+      if (!this.chartdata.labels)
+        return false;
+      else if (this.chartdata.labels.length)
+        return true;
+      else
+        return false;
+    },
+  },
   mqtt: {
     'iot/sensor/#': function(value, topic) {
       const [,,place, section, device] = topic.split('/');
@@ -93,14 +98,43 @@ export default {
   mounted() {
     this.$mqtt.subscribe(mqtt_topic);
     console.log('mqtt subscribe :', mqtt_topic);
-    // TODO : 마지막 측정값 불러와서 sensors에 저장
     this.resetChartdata();
+    this.getLastData();
   },
   destroyed() {
     this.$mqtt.unsubscribe(mqtt_topic);
     console.log('mqtt unsubscribe :', mqtt_topic);
   },
   methods: {
+    getLastData() { // 마지막에 측정된 데이터를 sensors에 저장
+      axios.get('/api/last')
+          .then(res => {
+            let new_sensors = {};
+            for (let sensor of res.data.results) {
+              const place = sensor.place;
+              const section = sensor.section;
+              const type = sensor.sensor;
+              const value = sensor.value;
+              if (!new_sensors[place])
+                new_sensors[place] = {};
+              if (!new_sensors[place][section])
+                new_sensors[place][section] = {};
+              if (new_sensors[place][section][type]) // 한바퀴 돌면 종료
+                break ;
+              new_sensors[place][section][type] = value;
+            }
+
+            let ordered = {};
+            // 사전 순으로 객체 정렬
+            Object.keys(new_sensors).sort().forEach(function(place) {
+              ordered[place] = {};
+              Object.keys(new_sensors[place]).sort().forEach(function(section) {
+                ordered[place][section] = new_sensors[place][section];
+              });
+            });
+            this.sensors = ordered;
+          });
+    },
     resetChartdata() {
       this.chartdata = {
         labels: [],

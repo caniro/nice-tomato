@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -46,6 +47,14 @@ INSTALLED_APPS = [
     'api',
     'mqtt',
 ]
+
+JWT_AUTH = {
+'JWT_SECRET_KEY': SECRET_KEY,
+'JWT_ALGORITHM': 'HS256',
+'JWT_ALLOW_REFRESH': True,
+'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
