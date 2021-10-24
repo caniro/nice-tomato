@@ -1,7 +1,7 @@
 <script>
-import { Line, mixins } from "vue-chartjs";
+import { Line, mixins } from 'vue-chartjs';
 
-export default {
+export default{
   extends: Line,
   mixins: [mixins.reactiveProp],
   props: ['options'],

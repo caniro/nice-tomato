@@ -1,7 +1,7 @@
 <template>
   <div class="pa-3">
     <div class="my-3">
-      <sensor-chart :data="chartdata" :options="options"></sensor-chart>
+      <sensor-chart :chart-data="chartdata" :options="options"></sensor-chart>
       <div v-if="Object.keys(sensors).length === 0">
         <v-text-field
           color="success"
@@ -131,34 +131,64 @@ export default {
             borderWidth: 1,
             backgroundColor: "transparent",
             data: []
-          ,}
+          },
         ]
       };
     },
     onClickSection(place, section) {
-      this.resetChartdata();
       axios.get(`/api/sensor?place=${place}&section=${section}`)
           .then(res => {
-              const TEMP = 0;
-              const HUMI = 1;
-              const ILLU = 2;
+              let temp_data = [];
+              let humi_data = [];
+              let illu_data = [];
+              let label = [];
               for (let data of res.data) {
                 if (data.sensor === 'temp') {
-                  // 차트 x축(시간축) 추가
                   const regdate_h = data.regdate_h.substring(11, 13);
-                  this.chartdata.labels.push(regdate_h);
-
-                  this.chartdata.datasets[TEMP].data.push(data.avg);
+                  label.push(regdate_h); // 차트 x축(시간축) 추가
+                  temp_data.push(data.avg);
                 }
                 else if (data['sensor'] === 'humi') {
-                  this.chartdata.datasets[HUMI].data.push(data.avg);
+                  humi_data.push(data.avg);
                 }
                 else if (data['sensor'] === 'illu') {
-                  this.chartdata.datasets[ILLU].data.push(data.avg);
+                  illu_data.push(data.avg);
                 }
               }
-              console.log(this.chartdata);
+              this.chartdata = {
+                labels: label,
+                datasets: [
+                  {
+                    label: "온도",
+                    borderColor: "#FC2525",
+                    pointBackgroundColor: "white",
+                    borderWidth: 1,
+                    pointBorderColor: "red",
+                    backgroundColor: "transparent",
+                    data: temp_data
+                  },
+                  {
+                    label: "습도",
+                    borderColor: "#05CBE1",
+                    pointBackgroundColor: "white",
+                    pointBorderColor: "skyblue",
+                    borderWidth: 1,
+                    backgroundColor: "transparent",
+                    data: humi_data
+                  },
+                  {
+                    label: "조도",
+                    borderColor: "#AAAA11",
+                    pointBackgroundColor: "white",
+                    pointBorderColor: "#AAAA11",
+                    borderWidth: 1,
+                    backgroundColor: "transparent",
+                    data: illu_data
+                  },
+                ]
+              };
           });
+      this.$vuetify.goTo('#app'); // 맨 위로
     },
     onClickDetail(place, section) {
       console.log(place, section);
