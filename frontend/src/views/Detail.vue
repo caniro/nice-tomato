@@ -116,10 +116,19 @@ export default {
             || isNaN(this.desired_illuminance))
         return ;
       console.log(this.desired_temperature, this.desired_humidity, this.desired_illuminance);
-      const mqtt_control_topic = `iot/control/${this.target_place}/${this.target_section}/`;
-      this.$mqtt.publish(mqtt_control_topic + `temp`, this.desired_temperature);
-      this.$mqtt.publish(mqtt_control_topic + `humi`, this.desired_humidity);
-      this.$mqtt.publish(mqtt_control_topic + `illu`, this.desired_illuminance);
+
+      const place = this.target_place;
+      const section = this.target_section;
+      const topic = 'iot/control';
+      const temp = this.desired_temperature;
+      const humi = this.desired_humidity;
+      const illu = this.desired_illuminance;
+      const message = { place, section,  temp, humi, illu };
+      this.$mqtt.publish(topic, JSON.stringify(message));
+      // const mqtt_control_topic = `iot/control/${this.target_place}/${this.target_section}/`;
+      // this.$mqtt.publish(mqtt_control_topic + `temp`, this.desired_temperature);
+      // this.$mqtt.publish(mqtt_control_topic + `humi`, this.desired_humidity);
+      // this.$mqtt.publish(mqtt_control_topic + `illu`, this.desired_illuminance);
     },
     getLastSpecificData() { // 마지막에 측정된 데이터를 sensors에 저장
       axios.get('/api/last')
