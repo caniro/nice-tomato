@@ -23,21 +23,31 @@
 </template>
 
 <script>
-// const RPI_CAMERA_IP = process.env.VUE_APP_RPI_CAMERA_IP;
+const RPI_CAMERA_IP_1 = process.env.VUE_APP_RPI_CAMERA_IP_1;
+const RPI_CAMERA_IP_2 = process.env.VUE_APP_RPI_CAMERA_IP_2;
 
 export default {
   name: 'Cctv',
   data() {
     return {
-      // url: 'http://' + RPI_CAMERA_IP + ':8000/mjpeg/stream/'
-      url1: 'https://picsum.photos/640/480?random=1',
-      url2: 'https://picsum.photos/640/480?random=2',
-      url3: 'https://picsum.photos/640/480?random=3',
-      url4: 'https://picsum.photos/640/480?random=4',
-      url5: 'https://picsum.photos/640/480?random=5',
-      url6: 'https://picsum.photos/640/480?random=6',
-      url7: 'https://picsum.photos/640/480?random=7',
-      url8: 'https://picsum.photos/640/480?random=8',
+      url1: 'http://' + RPI_CAMERA_IP_1 + ':8000/mjpeg/stream/',
+      url2: 'http://' + RPI_CAMERA_IP_2 + ':8000/mjpeg/stream/',
+      url3: 'http://' + RPI_CAMERA_IP_1 + ':8000/mjpeg/stream/',
+      url4: 'http://' + RPI_CAMERA_IP_2 + ':8000/mjpeg/stream/',
+      url5: 'http://' + RPI_CAMERA_IP_1 + ':8000/mjpeg/stream/',
+      url6: 'http://' + RPI_CAMERA_IP_2 + ':8000/mjpeg/stream/',
+      url7: 'http://' + RPI_CAMERA_IP_1 + ':8000/mjpeg/stream/',
+      url8: 'http://' + RPI_CAMERA_IP_2 + ':8000/mjpeg/stream/',
+
+      // motion 사용 : 8081 포트
+      // url1: 'http://192.168.219.101:8081',
+      // url2: 'http://192.168.219.102:8081',
+      // url3: 'http://192.168.219.101:8081',
+      // url4: 'http://192.168.219.102:8081',
+      // url5: 'http://192.168.219.101:8081',
+      // url6: 'http://192.168.219.102:8081',
+      // url7: 'http://192.168.219.101:8081',
+      // url8: 'http://192.168.219.102:8081',
     }
   }
 }

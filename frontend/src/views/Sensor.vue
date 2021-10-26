@@ -228,6 +228,9 @@ export default {
       console.log(place, section);
       this.$mqtt.unsubscribe('iot/sensor/#');
       this.$router.push(`detail?place=${place}&section=${section}`);
+      // 새 창에서 열기
+      // let routeData = this.$router.resolve({name: 'Detail', query: {"place": place, "section": section}});
+      // window.open(routeData.href, '_blank');
     }
   },
 }

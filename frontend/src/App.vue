@@ -69,6 +69,7 @@ export default {
       { title: 'Home', name: 'Home', icon: 'mdi-home' },
       { title: 'CCTV', name: 'Cctv', icon: 'mdi-video' },
       { title: '센서 통계', name: 'Sensor', icon: 'mdi-access-point-network' },
+      { title: '감시 차량', name: 'MonitoringCar', icon: 'mdi-car' },
     ],
   }),
   computed: {

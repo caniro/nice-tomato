@@ -1,6 +1,6 @@
 <template>
   <div class="pa-3">
-      <remote-camera url="https://picsum.photos/640/480?random=1"
+      <remote-camera url="http://192.168.219.101:8081"
         max-width="100%"></remote-camera>
         <data-loading :obj="sensors"></data-loading>
       <div v-for="(sections, place) in sensors" :key="place" class="pa-1 pb-3">

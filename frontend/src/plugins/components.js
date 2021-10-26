@@ -5,6 +5,7 @@ import Weather from '../components/Weather.vue'
 
 // controller
 import RemoteCamera from '../components/controllers/RemoteCamera.vue'
+import DirectionPanel from '../components/controllers/DirectionPanel.vue'
 
 // sensor
 import Temperature from '../components/sensors/Temperature'
@@ -21,6 +22,7 @@ Vue.component('knob', VueKnob)
 Vue.component('Weather', Weather)
 
 Vue.component('RemoteCamera', RemoteCamera)
+Vue.component('DirectionPanel', DirectionPanel)
 
 Vue.component('Temperature', Temperature)
 Vue.component('Humidity', Humidity)
