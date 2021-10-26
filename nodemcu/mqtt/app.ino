@@ -4,9 +4,9 @@
 #include <Led.h>
 #include <ArduinoJson.h>
 
-const char *ssid = "HanGuest1";
-const char *password = "00001234";
-const char *mqtt_server = "192.168.117.22";
+const char *ssid = "choorok2";
+const char *password = "#C01057104203";
+const char *mqtt_server = "192.168.219.108";
 
 MqttCom com;
 DHT dht11(D6, DHT11);
@@ -88,7 +88,7 @@ void setup()
 {
     com.init(ssid, password);
     com.setServer(mqtt_server, "iot/control", Callback);
-    com.setInterval(10000, Publish);
+    com.setInterval(2000, Publish);
     dht11.begin();
 }
 
