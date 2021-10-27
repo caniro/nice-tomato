@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="pa-3">
+    <v-img src="cover.png"></v-img>
+    <div v-if="!isLogin" class="mt-5">
+      <v-btn block color="primary" :to="{ name: 'Login' }">로그인</v-btn>
+    </div>
+    <div v-if="isLogin" class="mt-5">
+      <v-btn v-for="page in pages" :key="page.name" :to="{ name: page.name }"
+          block class="mb-5" color="success" outlined>
+        <v-icon>{{ page.icon }}</v-icon> {{ page.title }}
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
-  }
+  computed: {
+    ...mapGetters(['isLogin']),
+  },
+  data: () => ({
+    pages: [
+      { title: 'CCTV', name: 'Cctv', icon: 'mdi-video' },
+      { title: '센서 통계', name: 'Sensor', icon: 'mdi-access-point-network' },
+      { title: '감시 차량', name: 'MonitoringCar', icon: 'mdi-car' },
+    ]
+  }),
 }
 </script>
