@@ -75,9 +75,9 @@ export default {
       desired_illuminance: '',
       rules: {
         number: value => !isNaN(value) || 'Input must be a number',
-        temp_limit: value => (value >= -50 && value <= 100) || 'limit',
-        humi_limit: value => (value >= 0 && value <= 100) || 'limit',
-        illu_limit: value => (value >= 0 && value <= 100) || 'limit',
+        temp_limit: value => (value > 0 && value <= 100) || 'value limit',
+        humi_limit: value => (value > 0 && value <= 100) || 'value limit',
+        illu_limit: value => (value > 0 && value <= 100) || 'value limit',
       },
     }
   },

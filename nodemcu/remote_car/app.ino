@@ -1,4 +1,4 @@
-#include <MCP3008.h>
+#include <MCP3008.h> // https://github.com/nodesign/MCP3008
 #include <MqttCom.h>
 
 MCP3008 adc(D5, D7, D6, D8);

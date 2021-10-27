@@ -1,7 +1,5 @@
 <template>
   <div class="pa-3">
-    <!-- <page-title icon="mdi-login" class="mx-auto">로그인</page-title> -->
-    로그인
     <v-form @submit.prevent="login({ username, password })">
       <v-row class="login">
         <v-col cols="8" class="mx-auto">
